@@ -1,4 +1,14 @@
 # Tai
+
+## Andliage分支
+
+- 可以导出未分类的应用数据
+- 详细页可查看自定义日期数据
+- (开机)启动时不显示主界面，记得去右下角看托盘角标
+- 暂时条件不允许，移除了更新相关功能，可以在 [releases(Andliage)](https://github.com/AndliagePox/Tai/releases) 下载
+
+## ↓以下为原README内容
+
 👻 在 Windows 上统计 `软件` 使用时长和 `网站` 浏览时长
 
 <img src="index.jpg" width=600 />

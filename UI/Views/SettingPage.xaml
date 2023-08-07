@@ -80,13 +80,16 @@
                         <Image Width="25" Source="/Resources/Icons/tai.ico" HorizontalAlignment="Left"/>
                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                             <TextBlock VerticalAlignment="Center">
-                                <Run Text="Andliage v1.0.0 base on Tai "/><Run Text="{Binding Version}"/>
+                                <Run Text="Andliage分支v1.0.0基于Tai "/><Run Text="{Binding Version}"/>
                             </TextBlock>
                             <!--
                             <Btn:Button Visibility="{Binding CheckUpdateBtnVisibility}" Command="{Binding CheckUpdate}" Margin="20,0,0,0" VerticalAlignment="Center" Width="120" Icon="SetlockScreen" Content="检查更新"/>
                             -->
                         </StackPanel>
                         <TextBlock Margin="0,30,0,0">
+                                <Run Text="开源 "/><Hyperlink Command="{Binding OpenURL}" CommandParameter="https://github.com/AndliagePox/Tai/tree/andliage">https://github.com/AndliagePox/Tai/tree/andliage</Hyperlink>
+                        </TextBlock>
+                        <TextBlock Margin="0,5,0,0">
                                 <Run Text="原版开源 "/><Hyperlink Command="{Binding OpenURL}" CommandParameter="https://github.com/Planshit/Tai">https://github.com/Planshit/Tai</Hyperlink>
                         </TextBlock>
                         <TextBlock Margin="0,5,0,0">
