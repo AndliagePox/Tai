@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using UI.Controls.Charts.Model;
 using UI.Controls.DatePickerBar;
+using UI.Controls.Select;
 
 namespace UI.Models
 {
@@ -116,6 +117,16 @@ namespace UI.Models
             set { CustomStartDayDate_ = value; OnPropertyChanged(); }
         }
 
+        private SelectItemModel CustomStartHour_;
+        /// <summary>
+        /// CustomStartHour
+        /// </summary>
+        public SelectItemModel CustomStartHour
+        {
+            get { return CustomStartHour_; }
+            set { CustomStartHour_ = value; OnPropertyChanged(); }
+        }
+
         private DateTime CustomEndDayDate_;
         /// <summary>
         ///  date
@@ -124,6 +135,38 @@ namespace UI.Models
         {
             get { return CustomEndDayDate_; }
             set { CustomEndDayDate_ = value; OnPropertyChanged(); }
+        }
+
+        private SelectItemModel CustomEndHour_;
+        /// <summary>
+        /// CustomEndHour
+        /// </summary>
+        public SelectItemModel CustomEndHour { 
+            get { return CustomEndHour_; } 
+            set { CustomEndHour_ = value; OnPropertyChanged(); } }
+
+
+        /// <summary>
+        /// 时间选项
+        /// </summary>
+        public List<SelectItemModel> HourOptions { get; } = CreateHourOptions();
+
+        private static List<SelectItemModel> CreateHourOptions()
+        {
+            List<SelectItemModel> options = new List<SelectItemModel>();
+
+            for (int i = 0; i <= 24; i++)
+            {
+                SelectItemModel item = new SelectItemModel
+                {
+                    Id = i,
+                    Name = i + ":00"
+                };
+
+                options.Add(item);
+            }
+
+            return options;
         }
 
         private ContextMenu AppContextMenu_;

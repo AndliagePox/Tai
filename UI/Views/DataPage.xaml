@@ -91,8 +91,10 @@
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
                         <TextBlock Text="从" VerticalAlignment="Center"/>
                         <select:DateSelect Date="{Binding CustomStartDayDate,Mode=TwoWay}" SelectType="Day" Margin="10,0,10,0"/>
+                        <select:Select Padding="5" Margin="0,0,10,0" IsShowIcon="False" SelectedItem="{Binding CustomStartHour,Mode=TwoWay}" Options="{Binding HourOptions}"/>
                         <TextBlock Text="到" VerticalAlignment="Center"/>
                         <select:DateSelect Date="{Binding CustomEndDayDate,Mode=TwoWay}" SelectType="Day" Margin="10,0,10,0"/>
+                        <select:Select Padding="5" Margin="0,0,0,0" IsShowIcon="False" SelectedItem="{Binding CustomEndHour,Mode=TwoWay}" Options="{Binding HourOptions}"/>
                     </StackPanel>
 
                     <Charts:Charts IsShowBadge="True" IsSearch="True" Grid.Row="1" ItemMenu="{Binding AppContextMenu}" Data="{Binding CustomDayData}" ChartsType="List" Margin="0,20,0,0" ClickCommand="{Binding ToDetailCommand}"/>

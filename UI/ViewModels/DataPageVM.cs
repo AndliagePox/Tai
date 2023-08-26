@@ -99,9 +99,16 @@ namespace UI.ViewModels
             {
                 LoadData(YearDate);
             }
-            else if (e.PropertyName == nameof(CustomStartDayDate) || e.PropertyName == nameof(CustomEndDayDate))
+            else if (e.PropertyName == nameof(CustomStartDayDate)
+                || e.PropertyName == nameof(CustomEndDayDate)
+                || e.PropertyName == nameof(CustomStartHour)
+                || e.PropertyName == nameof(CustomEndHour))
             {
-                LoadCustomData(CustomStartDayDate, CustomEndDayDate);
+                // 初始化完成前不加载数据
+                if (CustomStartDayDate != DateTime.MinValue && CustomEndDayDate != DateTime.MinValue)
+                {
+                    LoadCustomData(CustomStartDayDate, CustomEndDayDate, CustomStartHour.Id, CustomEndHour.Id);
+                }
             }
             else if (e.PropertyName == nameof(TabbarSelectedIndex))
             {
@@ -129,12 +136,22 @@ namespace UI.ViewModels
                 }
                 else if (TabbarSelectedIndex == 3)
                 {
-                    if (CustomStartDayDate == DateTime.MinValue)
+                    if (CustomStartDayDate == DateTime.MinValue && CustomEndDayDate == DateTime.MinValue)
                     {
-                        CustomStartDayDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-                    }
-                    if (CustomEndDayDate == DateTime.MinValue)
-                    {
+                        // 当日开始时间为4点
+                        CustomStartHour = HourOptions[4];
+                        if (DateTime.Now.Hour < 4)
+                        {
+                            // 当前是凌晨，开始时间为前一天
+                            CustomStartDayDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(-1);
+                            CustomEndHour = HourOptions[4];
+                        }
+                        else
+                        {
+                            // 当前非凌晨，正常统计今日
+                            CustomStartDayDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                            CustomEndHour = HourOptions[24];
+                        }
                         CustomEndDayDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
                     }
                 }
@@ -144,7 +161,11 @@ namespace UI.ViewModels
                 LoadData(DayDate, 0);
                 LoadData(MonthDate, 1);
                 LoadData(YearDate, 2);
-                LoadCustomData(CustomStartDayDate, CustomEndDayDate);
+                // 初始化完成前不加载数据
+                if (CustomStartDayDate != DateTime.MinValue && CustomEndDayDate != DateTime.MinValue)
+                {
+                    LoadCustomData(CustomStartDayDate, CustomEndDayDate, CustomStartHour.Id, CustomEndHour.Id);
+                }
                 if (ShowType.Id == 0)
                 {
                     AppContextMenu = appContextMenuServicer.GetContextMenu();
@@ -216,34 +237,22 @@ namespace UI.ViewModels
             });
         }
 
-        private async void LoadCustomData(DateTime startDate, DateTime endDate)
+        private async void LoadCustomData(DateTime startDate, DateTime endDate, int startHour, int endHour)
         {
             await Task.Run(() =>
             {
-                // 无法默认加载当日数据的原因：
-                // DataPageVM_PropertyChanged中初始化CustomStartDayDate和CustomEndDayDate时，
-                // CustomStartDayDate赋值触发数据加载，但CustomEndDayDate还未赋值。
-                // 查询范围变成了 “DateTime.Now 到 DateTime.MinValue”，显然这没有数据，
-                // 当这条线程后执行完成时，就出现了未加载当日数据的问题。
-                // 因此加入以下判断
-                if (startDate == DateTime.MinValue)
-                {
-                    startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-                }
-                if (endDate == DateTime.MinValue)
-                {
-                    endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-                }
+                DateTime startDateTime = (startHour < 24)
+                    ? new DateTime(startDate.Year, startDate.Month, startDate.Day, startHour, 0, 0)
+                    : new DateTime(startDate.Year, startDate.Month, startDate.Day, 0, 0, 0).AddDays(1);
 
-                DateTime startDateTime, endDateTime;
-
-                startDateTime = new DateTime(startDate.Year, startDate.Month, startDate.Day, 0, 0, 0);
-                endDateTime = new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59);
+                DateTime endDateTime = (endHour < 24)
+                    ? new DateTime(endDate.Year, endDate.Month, endDate.Day, endHour, 0, 0)
+                    : new DateTime(endDate.Year, endDate.Month, endDate.Day, 0, 0, 0).AddDays(1);
 
                 List<ChartsDataModel> chartData = new List<ChartsDataModel>();
                 if (ShowType.Id == 0)
                 {
-                    var result = data.GetDateRangelogList(startDateTime, endDateTime);
+                    var result = data.GetHoursRangelogList(startDateTime, endDateTime);
                     chartData = MapToChartsData(result);
                 }
                 else

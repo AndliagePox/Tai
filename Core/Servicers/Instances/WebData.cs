@@ -737,8 +737,8 @@ namespace Core.Servicers.Instances
 
         public List<WebSiteModel> GetWebSiteLogList(DateTime start_, DateTime end_)
         {
-            start_ = new DateTime(start_.Year, start_.Month, start_.Day, 0, 0, 0);
-            end_ = new DateTime(end_.Year, end_.Month, end_.Day, 23, 59, 59);
+            // start_ = new DateTime(start_.Year, start_.Month, start_.Day, 0, 0, 0);
+            // end_ = new DateTime(end_.Year, end_.Month, end_.Day, 23, 59, 59);
             using (var db = _database.GetReaderContext())
             {
                 var query = (from log in db.WebBrowserLogs

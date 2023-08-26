@@ -199,6 +199,71 @@ namespace Core.Servicers.Instances
             }
         }
 
+        public IEnumerable<DailyLogModel> GetHoursRangelogList(DateTime start, DateTime end, int take = -1, int skip = -1)
+        {
+
+            IEnumerable<AppModel> apps = _appData.GetAllApps();
+
+            using (var db = _database.GetReaderContext())
+            {
+                var data = db.HoursLog
+                .Where(m => m.DataTime >= start && m.DataTime < end && m.AppModelID != 0)
+                .GroupBy(m => m.AppModelID)
+                .Select(m => new
+                {
+                    Time = m.Sum(a => a.Time),
+                    Date = m.FirstOrDefault().DataTime,
+                    AppID = m.FirstOrDefault().AppModelID
+                });
+                if (skip > 0 && take > 0)
+                {
+                    data = data.OrderByDescending(m => m.Time).Skip(skip).Take(take);
+                }
+                else if (skip > 0)
+                {
+                    data = data.OrderByDescending(m => m.Time).Skip(skip);
+                }
+                else if (take > 0)
+                {
+                    data = data.OrderByDescending(m => m.Time).Take(take);
+                }
+                else
+                {
+                    data = data.OrderByDescending(m => m.Time);
+                }
+
+
+
+                //: db.DailyLog
+                //.Where(m => m.Date >= start && m.Date <= end && m.AppModelID != 0)
+                //.GroupBy(m => m.AppModelID)
+                //.Select(m => new
+                //{
+                //    Time = m.Sum(a => a.Time),
+                //    Date = m.FirstOrDefault().Date,
+                //    AppID = m.FirstOrDefault().AppModelID
+                //})
+                //.OrderByDescending(m => m.Time)
+                //.Take(take);
+
+                var res = data
+                .ToList()
+                .Select(m => new DailyLogModel
+                {
+                    Time = m.Time,
+                    Date = m.Date,
+                    AppModelID = m.AppID
+                }).ToList();
+
+                foreach (var log in res)
+                {
+                    log.AppModel = _appData.GetApp(log.AppModelID);
+                }
+
+                return res;
+            }
+        }
+
         public IEnumerable<DailyLogModel> GetThisWeeklogList()
         {
             DateTime weekStartDate = DateTime.Now, weekEndDate = DateTime.Now;

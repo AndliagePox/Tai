@@ -33,6 +33,14 @@ namespace Core.Servicers.Interfaces
         IEnumerable<DailyLogModel> GetDateRangelogList(DateTime start, DateTime end, int take = -1, int skip = -1);
 
         /// <summary>
+        /// 查询指定范围数据 - 时段维度
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        IEnumerable<DailyLogModel> GetHoursRangelogList(DateTime start, DateTime end, int take = -1, int skip = -1);
+
+        /// <summary>
         /// 获取本周的数据
         /// </summary>
         /// <returns></returns>
