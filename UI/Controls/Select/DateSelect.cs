@@ -349,10 +349,10 @@ namespace UI.Controls.Select
         private void UpdateDateStr()
         {
             DateStr = Date.ToString("yyyy年MM月dd日");
-            if (Date.Date == DateTime.Now.Date)
-            {
-                DateStr = "今天";
-            }
+            //if (Date.Date == DateTime.Now.Date)
+            //{
+            //    DateStr = "今天";
+            //}
             if (SelectType == DateSelectType.Month)
             {
                 DateStr = Date.ToString("yyyy年MM月");
