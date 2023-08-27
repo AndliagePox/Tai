@@ -140,19 +140,19 @@ namespace UI.ViewModels
                     {
                         // 当日开始时间为4点
                         CustomStartHour = HourOptions[4];
+                        CustomEndHour = HourOptions[4];
                         if (DateTime.Now.Hour < 4)
                         {
                             // 当前是凌晨，开始时间为前一天
                             CustomStartDayDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(-1);
-                            CustomEndHour = HourOptions[4];
+                            CustomEndDayDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
                         }
                         else
                         {
-                            // 当前非凌晨，正常统计今日
+                            // 当前非凌晨，结束时间为后一天
                             CustomStartDayDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-                            CustomEndHour = HourOptions[24];
+                            CustomEndDayDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day).AddDays(1);
                         }
-                        CustomEndDayDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
                     }
                 }
             }

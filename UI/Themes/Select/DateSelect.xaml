@@ -140,10 +140,6 @@
                                                                             <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                                                         </Border>
                                                                         <ControlTemplate.Triggers>
-                                                                            <DataTrigger Binding="{Binding IsOut}" Value="True">
-                                                                                <Setter  Property="Foreground" Value="{DynamicResource DisabledTextBrush}"/>
-                                                                                <Setter Property="IsEnabled" Value="False"/>
-                                                                            </DataTrigger>
                                                                             <DataTrigger Binding="{Binding IsDisabled}" Value="True">
                                                                                 <Setter  Property="Foreground" Value="{DynamicResource DisabledTextBrush}"/>
                                                                                 <Setter Property="IsEnabled" Value="False"/>
