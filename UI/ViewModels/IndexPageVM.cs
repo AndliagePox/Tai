@@ -10,8 +10,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media.Imaging;
 using UI.Controls;
 using UI.Controls.Charts.Model;
 using UI.Controls.Select;
@@ -170,6 +168,24 @@ namespace UI.ViewModels
             //}
         }
 
+        private Tuple<DateTime, DateTime> CaclStartAndEndTime()
+        {
+            DateTime startTime, endTime;
+            if (DateTime.Now.Hour < 4)
+            {
+                // 当前是凌晨，开始时间为前一天
+                startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 4, 0, 0).AddDays(-1);
+                endTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 4, 0, 0);
+            }
+            else
+            {
+                // 当前非凌晨，结束时间为后一天
+                startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 4, 0, 0);
+                endTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 4, 0, 0).AddDays(1);
+            }
+            return new Tuple<DateTime, DateTime>(startTime, endTime);
+        }
+
         #region 今日数据
         private void LoadTodayData()
         {
@@ -177,12 +193,15 @@ namespace UI.ViewModels
 
             Task.Run(() =>
             {
-                var list = data.GetDateRangelogList(DateTime.Now.Date, DateTime.Now.Date);
+                var startAndEndTime = CaclStartAndEndTime();
+                var list = data.GetHoursRangelogList(startAndEndTime.Item1, startAndEndTime.Item2);
                 var res = MapToChartsData(list);
-                var topWebList = _webData.GetDateRangeWebSiteList(DateTime.Now, DateTime.Now, FrequentUseNum);
+                var topWebList = _webData.GetDateRangeWebSiteList(startAndEndTime.Item1, startAndEndTime.Item2, FrequentUseNum);
+                var sumTime = Time.ToString((int)res.Select(e => e.Value).Sum());
 
                 IsLoading = false;
                 WeekData = res;
+                SumTime = sumTime;
                 WebFrequentUseData = MapToChartsData(topWebList);
             });
         }
@@ -192,8 +211,9 @@ namespace UI.ViewModels
             IsLoading = true;
             Task.Run(() =>
             {
-                var appMoreData = data.GetDateRangelogList(DateTime.Now.Date, DateTime.Now.Date, MoreNum, FrequentUseNum);
-                var webMoreData = _webData.GetDateRangeWebSiteList(DateTime.Now.Date, DateTime.Now.Date, MoreNum, FrequentUseNum);
+                var startAndEndTime = CaclStartAndEndTime();
+                var appMoreData = data.GetDateRangelogList(startAndEndTime.Item1, startAndEndTime.Item2, MoreNum, FrequentUseNum);
+                var webMoreData = _webData.GetDateRangeWebSiteList(startAndEndTime.Item1, startAndEndTime.Item2, MoreNum, FrequentUseNum);
 
                 IsLoading = false;
                 AppMoreData = MapToChartsData(appMoreData);

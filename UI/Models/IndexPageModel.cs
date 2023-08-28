@@ -50,6 +50,9 @@ namespace UI.Models
         private bool IsLoading_;
         public bool IsLoading { get { return IsLoading_; } set { IsLoading_ = value; OnPropertyChanged(); } }
 
+        private string SumTime_;
+        public string SumTime { get { return SumTime_; } set { SumTime_ = value; OnPropertyChanged(); } }
+
         private ContextMenu AppContextMenu_;
         public ContextMenu AppContextMenu { get { return AppContextMenu_; } set { AppContextMenu_ = value; OnPropertyChanged(); } }
 

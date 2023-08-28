@@ -666,6 +666,11 @@ namespace UI.Controls.Charts
                 {
                     countText.Text = Data.Count().ToString();
                 }
+                var timeText = GetTemplateChild("ATime") as Run;
+                if (timeText != null)
+                {
+                    timeText.Text = Time.ToString((int)Data.Select(e => e.Value).Sum());
+                }
             }
 
             DataMaxValue = maxValue;
