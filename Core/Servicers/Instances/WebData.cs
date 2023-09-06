@@ -256,8 +256,8 @@ namespace Core.Servicers.Instances
             }
             else
             {
-                start = new DateTime(start.Year, start.Month, start.Day, 0, 0, 0);
-                end = new DateTime(end.Year, end.Month, end.Day, 23, 59, 59);
+                //start = new DateTime(start.Year, start.Month, start.Day, 0, 0, 0);
+                //end = new DateTime(end.Year, end.Month, end.Day, 23, 59, 59);
             }
             using (var db = _database.GetReaderContext())
             {
