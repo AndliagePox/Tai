@@ -360,7 +360,7 @@ namespace Core.Servicers.Instances
 
             bool isCheck = IsCheckApp(args.ProcessName, args.Description, args.File);
 
-            Logger.Info($"Active[{isCheck}]:" + args.ProcessName + ",Last:" + lastActiveProcess + ",Time:" + activeStartTime.ToString());
+            Logger.Info($"Active[{isCheck}]:" + args.ProcessName + ",Last:" + lastActiveProcess + ",Time:" + activeStartTime.ToString() + ", hwnd:" + args.Handle + ", handleTicks:" + DateTime.Now.Ticks);
 
             if (activeProcess != args.ProcessName)
             {

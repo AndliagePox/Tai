@@ -1,11 +1,17 @@
 # Tai
 
-## Andliage分支
+## Andliage分支(最新版)feature
 
 - 可以导出未分类的应用数据
-- 详细页可查看自定义日期数据
-- (开机)启动时不显示主界面，记得去右下角看托盘角标
-- 暂时条件不允许，移除了更新相关功能，可以在 [releases(Andliage)](https://github.com/AndliagePox/Tai/releases) 下载
+- 开机启动时不弹出主界面
+- 概览页和详细页显示总时长
+- 概览页移除了“本周”tab
+- 概览页每日起始时间设为了4:00
+- 详细页可以筛选自定义日期时间的数据
+- 日期选择器在当天不将显示文本替换为“今天”
+- 日期选择器可以选择未来的日期进行筛选(当然，它一般没有数据)
+- 修复了异步处理事件导致的偶发统计不正确
+- 移除了更新相关功能，可以在 [releases(Andliage)](https://github.com/AndliagePox/Tai/releases) 下载
 
 ## ↓以下为原README内容
 
